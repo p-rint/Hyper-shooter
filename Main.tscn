@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://5ueievgo74mh"]
+[gd_scene load_steps=17 format=3 uid="uid://5ueievgo74mh"]
 
 [ext_resource type="Script" uid="uid://tg2mid3ya4bf" path="res://character_body_3d.gd" id="1_glv2v"]
 [ext_resource type="Texture2D" uid="uid://b3mnnxki5hf21" path="res://icon.svg" id="1_r0du0"]
@@ -31,6 +31,33 @@ uv1_triplanar = true
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_uu6xs"]
 
+[sub_resource type="Animation" id="Animation_cm0pq"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CamPivot/Camera3D/Hand:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.3, -0.20000005, -1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CamPivot:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
 [sub_resource type="Animation" id="Animation_r0du0"]
 resource_name = "shoot"
 tracks/0/type = "value"
@@ -46,24 +73,25 @@ tracks/0/keys = {
 "values": [Vector3(0.3, -0.20000005, -1), Vector3(0.3, -0.2, -0.9), Vector3(0.3, -0.20000005, -1)]
 }
 
-[sub_resource type="Animation" id="Animation_cm0pq"]
-length = 0.001
+[sub_resource type="Animation" id="Animation_fos0i"]
+resource_name = "crouch"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("CamPivot/Camera3D/Hand:position")
+tracks/0/path = NodePath("CamPivot:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(0.3, -0.20000005, -1)]
+"values": [Vector3(0, -0.81, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_fos0i"]
 _data = {
 &"RESET": SubResource("Animation_cm0pq"),
+&"crouch": SubResource("Animation_fos0i"),
 &"shoot": SubResource("Animation_r0du0")
 }
 
@@ -121,6 +149,11 @@ transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 1, 0, 0, -0.5)
 target_position = Vector3(0, 0, -30)
 collide_with_areas = true
 collide_with_bodies = false
+
+[node name="Laser" type="MeshInstance3D" parent="CharacterBody3D/CamPivot/Camera3D/Hand"]
+transform = Transform3D(0.19999997, 0, 0, 0, 0.19999997, 0, 0, 0, 10, 0, 0, -5)
+mesh = SubResource("BoxMesh_r0du0")
+skeleton = NodePath("../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0)

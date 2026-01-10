@@ -5,6 +5,9 @@ var direction : Vector3
 
 const SPEED = 16.0
 const JUMP_VELOCITY = 4.5
+const crouchSPEED = 8
+
+var moveSpeed = SPEED
 
 @onready var camPiv = $CamPivot
 
@@ -24,14 +27,19 @@ func move() -> void:
 	#model.rotation.y = lerp_angle(model.rotation.y, targetRot, .5)
 	
 	if direction:
-		velocity.x = lerp(velocity.x, direction.x * SPEED, .15 * 2)
-		velocity.z = lerp(velocity.z, direction.z * SPEED, .15 * 2)
+		velocity.x = lerp(velocity.x, direction.x * moveSpeed, .15 * 2)
+		velocity.z = lerp(velocity.z, direction.z * moveSpeed, .15 * 2)
 		
 		#model.rotation.y = lerp_angle(model.rotation.y, atan2(-velocity.x, -velocity.z), .2)
 	else:
 		velocity.x = move_toward(velocity.x, 0, 1)
 		velocity.z = move_toward(velocity.z, 0, 1)
 
+
+func crouch():
+	animPlr.play("crouch")
+	
+	
 
 
 func _physics_process(delta: float) -> void:
@@ -58,7 +66,15 @@ func _physics_process(delta: float) -> void:
 		if gunRay.is_colliding():
 			print("Hit!!!")
 		
+	
+	if Input.is_action_just_pressed("Crouch"):
+		camPiv.position.y = -0.81
+		moveSpeed = crouchSPEED
 		
+	
+	if Input.is_action_just_released("Crouch"):
+		camPiv.position.y = 0
+		moveSpeed = SPEED
 	
 	move_and_slide()
 	
