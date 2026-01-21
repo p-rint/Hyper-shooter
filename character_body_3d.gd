@@ -12,12 +12,19 @@ var moveSpeed = SPEED
 @onready var camPiv = $CamPivot
 
 @onready var model = $Character
+
+@onready var ParticleManager: Node = $"../Scripts/Particles"
+
+
 var dt : float
 var targetRot = 0
 
 @onready var animPlr: AnimationPlayer = $AnimationPlayer
 
-@onready var gunRay: RayCast3D = $CamPivot/Camera3D/Hand/GunRay
+@onready var gunRay: RayCast3D = $CamPivot/Camera3D/GunRay
+
+
+@export var health = 100
 
 
 func flatten(vector: Vector3) -> Vector3:
@@ -39,11 +46,13 @@ func move() -> void:
 func crouch():
 	animPlr.play("crouch")
 	
+	#velocity = flat camPiv.basis
 	
 
 
 func _physics_process(delta: float) -> void:
 	dt = delta
+	
 	
 	#gravity.
 	if not is_on_floor():
@@ -65,7 +74,9 @@ func _physics_process(delta: float) -> void:
 		animPlr.play("shoot")
 		if gunRay.is_colliding():
 			print("Hit!!!")
-		
+			gunRay.get_collider().damage(10)
+			ParticleManager.bulletHit(gunRay.get_collision_point(), global_position)
+			
 	
 	if Input.is_action_just_pressed("Crouch"):
 		camPiv.position.y = -0.81
@@ -77,4 +88,10 @@ func _physics_process(delta: float) -> void:
 		moveSpeed = SPEED
 	
 	move_and_slide()
+	
+	
+
+
+func damage(dmg):
+	health -= dmg
 	
