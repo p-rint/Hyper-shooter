@@ -4,7 +4,13 @@ var mouseLock = false
 
 @onready var player: CharacterBody3D = $".."
 
+var twistTarget : float = 0.0
 var twist : float = 0.0
+
+var twistOffset : float = 0.0
+
+var xBob : float = 0.0
+var bobTime : float = 0.0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -38,12 +44,23 @@ func _process(delta: float) -> void:
 		mouseLock = not mouseLock
 		
 	
+	#Strafe
 	
-	var twistTarget : float = -basis.x.dot(player.velocity.normalized())
-	twist = lerpf(twist, twistTarget, delta * 5)
+	twistTarget = -basis.x.dot(player.velocity.normalized()) + twistOffset
+	twist = lerpf(twist, twistTarget, delta * (5 + twistOffset))
 	
 	$Camera3D/Hand.rotation.z = deg_to_rad(twist) * 6
 	$Camera3D.rotation.z = deg_to_rad(twist) * 2
+	
+	#View Bob
+	bobTime += delta * player.velocity.length()
+	var bobSpeed = (player.velocity.length()/player.SPEED)
+	
+	$Camera3D/Hand.position.x = .3 + sin(bobTime / 2.0) * .01
+	$Camera3D/Hand.position.y = -.2 + sin(bobTime) * .01
+		
+	
+	
 	#print(twist)
 	
 	
