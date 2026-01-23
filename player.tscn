@@ -133,10 +133,10 @@ tracks/1/path = NodePath("CamPivot/Camera3D/Hand/Gun:rotation")
 tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.033333335, 0.12, 0.2967),
+"times": PackedFloat32Array(0, 0.032655735, 0.1193224, 0.2967),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
-"values": [Vector3(0, 0, 0), Vector3(0.091158554, 0, 0), Vector3(-0.017453292, 0, 0), Vector3(0, 0, 0)]
+"values": [Vector3(0, 0, 0), Vector3(0.090757124, 0, -0.05235988), Vector3(-0.017453292, 0, 0), Vector3(0, 0, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_fos0i"]
@@ -178,7 +178,7 @@ skeleton = NodePath("../../..")
 
 [node name="GunRay" type="RayCast3D" parent="CamPivot/Camera3D"]
 transform = Transform3D(0.099999994, 0, 0, 0, 0.099999994, 0, 0, 0, 1, 0, 0, 0)
-target_position = Vector3(0, 0, -30)
+target_position = Vector3(0, 0, -50)
 collide_with_areas = true
 collide_with_bodies = false
 

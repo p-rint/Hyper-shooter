@@ -30,18 +30,21 @@ func _input(event: InputEvent) -> void:
 		
 		rotation.y = wrapf(rotation.y, -PI, PI)
 		rotation.x = clampf(rotation.x,-PI/2,PI/2)
+	
+	if event is InputEventMouseButton and event.pressed:
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 		
+	
+	if event.is_action_pressed("Tab"):
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	if event.is_action_released("Tab"):
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	
-	if Input.is_action_just_pressed("Escape"):
-		if mouseLock:
-			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-			
-		else:
-			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-		mouseLock = not mouseLock
 		
 	
 	#Strafe

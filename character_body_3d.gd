@@ -41,6 +41,7 @@ var curGravity = get_gravity()
 var wallJumpForce = 0
 var wallJumpDir = Vector3()
 
+@onready var uiAnimPlr : AnimationPlayer = $"../CanvasLayer/AnimationPlayer"
 
 
 func flatten(vector: Vector3) -> Vector3:
@@ -81,9 +82,13 @@ func _physics_process(delta: float) -> void:
 
 	if Input.is_action_just_pressed("Shoot"):
 		animPlr.stop()
+		uiAnimPlr.stop()
 		animPlr.play("shoot")
+		uiAnimPlr.play("pew")
 		if gunRay.is_colliding() and gunRay.collide_with_areas:
+			uiAnimPlr.stop()
 			print("Hit!!!")
+			uiAnimPlr.play("hit")
 			gunRay.get_collider().get_parent().damage(10)
 			ParticleManager.bulletHit(gunRay.get_collision_point(), global_position)
 			
@@ -120,8 +125,12 @@ func _physics_process(delta: float) -> void:
 	handleSpeed()
 	move_and_slide()
 	 
-	print(velocity)
+	#print(position.y)
+	
+	if health <= 0 or position.y <= -40:
+		get_tree().reload_current_scene()
 		
+	
 
 func damage(dmg):
 	health -= dmg
@@ -149,6 +158,7 @@ func crouch():
 		isSliding = true
 		var slideVel = slideDir * slideSpeed#-flatten(camPiv.basis.z).normalized() * slideSpeed
 		slideSpeed = lerpf(slideSpeed,0,dt /3.0)
+		slideVel.y += velocity.y
 		velocity = slideVel
 	else: 
 		

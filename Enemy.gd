@@ -27,8 +27,10 @@ func damage(dmg):
 
 
 func _on_attack_timeout() -> void:
-	player.damage(10)
+	if position.distance_to(player.position) < 30:
+		player.damage(10)
 
 
 func die() -> void:
 	queue_free()
+	player.health += 10
