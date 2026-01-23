@@ -4,7 +4,7 @@ var input_dir : Vector2
 var direction : Vector3
 
 const SPEED = 8.0
-const JUMP_VELOCITY = 4.5
+const JUMP_VELOCITY = 6.0
 const crouchSPEED = 4
 const sprintSPEED = 16.0
 
@@ -32,6 +32,16 @@ var isSprint = false
 @export var isSliding = false
 
 var slideSpeed = 0
+var slideDir : Vector3
+
+var curGravity = get_gravity()
+
+@onready var wallJumpCast: RayCast3D = $WallJump
+
+var wallJumpForce = 0
+var wallJumpDir = Vector3()
+
+
 
 func flatten(vector: Vector3) -> Vector3:
 	return Vector3( vector.x, 0, vector.z)
@@ -64,7 +74,7 @@ func _physics_process(delta: float) -> void:
 	move()
 	
 	# Handle jump.
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
+	if Input.is_action_just_pressed("Jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
 
 
@@ -72,20 +82,26 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("Shoot"):
 		animPlr.stop()
 		animPlr.play("shoot")
-		if gunRay.is_colliding():
+		if gunRay.is_colliding() and gunRay.collide_with_areas:
 			print("Hit!!!")
-			gunRay.get_collider().damage(10)
+			gunRay.get_collider().get_parent().damage(10)
 			ParticleManager.bulletHit(gunRay.get_collision_point(), global_position)
 			
 	
 	if Input.is_action_just_pressed("Crouch"):
-		camPiv.position.y = -0.81
+		#camPiv.position.y = -0.81
+		$CollisionShape3D.scale.y = .2
+		$CollisionShape3D.position.y = -.4
 		isCrouch = true
 		slideSpeed = flatten(velocity).length()
+		slideDir = flatten(velocity).normalized()
 		
 	
 	if Input.is_action_just_released("Crouch"):
-		camPiv.position.y = 0
+		#camPiv.position.y = 0
+		$CollisionShape3D.position.y = 0
+		$CollisionShape3D.scale.y = 1
+		
 		isCrouch = false
 	
 	if Input.is_action_just_pressed("Sprint"):
@@ -94,11 +110,18 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_released("Sprint"):
 		isSprint = false
 	
+	
+	wallJumpCast.target_position = -direction * 3
+	if Input.is_action_just_pressed("Jump") and not is_on_floor():
+		if wallJumpCast.is_colliding():
+			velocity = direction * 50
+			velocity.y = 13
+	
 	handleSpeed()
 	move_and_slide()
-	
-	
-
+	 
+	print(velocity)
+		
 
 func damage(dmg):
 	health -= dmg
@@ -114,6 +137,8 @@ func handleSpeed():
 	else:
 		moveSpeed = SPEED
 		camPiv.twistOffset = 0
+		
+	
 
 
 
@@ -122,11 +147,12 @@ func crouch():
 	if flatten(velocity).length() > 5:
 		
 		isSliding = true
-		var slideVel = -flatten(camPiv.basis.z).normalized() * slideSpeed
-		slideSpeed = lerpf(slideSpeed,0,dt )
+		var slideVel = slideDir * slideSpeed#-flatten(camPiv.basis.z).normalized() * slideSpeed
+		slideSpeed = lerpf(slideSpeed,0,dt /3.0)
 		velocity = slideVel
 	else: 
 		
 		isSliding = false
 		moveSpeed = crouchSPEED
+	
 	

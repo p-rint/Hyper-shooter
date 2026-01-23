@@ -1,9 +1,8 @@
-[gd_scene load_steps=20 format=3 uid="uid://5ueievgo74mh"]
+[gd_scene load_steps=11 format=3 uid="uid://5ueievgo74mh"]
 
-[ext_resource type="Script" uid="uid://tg2mid3ya4bf" path="res://character_body_3d.gd" id="1_glv2v"]
 [ext_resource type="Texture2D" uid="uid://b3mnnxki5hf21" path="res://icon.svg" id="1_r0du0"]
-[ext_resource type="Script" uid="uid://dfylgkoqep7mm" path="res://Enemy.gd" id="2_cm0pq"]
-[ext_resource type="Script" uid="uid://go8e8enrhc4l" path="res://cam_pivot.gd" id="2_uu6xs"]
+[ext_resource type="PackedScene" uid="uid://qsqcpdmxd3mm" path="res://player.tscn" id="2_fos0i"]
+[ext_resource type="PackedScene" uid="uid://djtjrrb2wes5i" path="res://Enemy.tscn" id="5_3dxm6"]
 [ext_resource type="Script" uid="uid://1yedewnw22cq" path="res://canvas_layer.gd" id="5_fos0i"]
 [ext_resource type="Script" uid="uid://dkdom43jw8bl" path="res://particles.gd" id="6_3dxm6"]
 
@@ -21,105 +20,10 @@ tonemap_mode = 2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cm0pq"]
 albedo_texture = ExtResource("1_r0du0")
+uv1_scale = Vector3(0.5, 0.5, 0.5)
 uv1_triplanar = true
 
-[sub_resource type="BoxMesh" id="BoxMesh_uu6xs"]
-
 [sub_resource type="BoxMesh" id="BoxMesh_r0du0"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_uu6xs"]
-
-[sub_resource type="Animation" id="Animation_cm0pq"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("CamPivot/Camera3D/Hand/Gun:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 0, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("CamPivot:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 0, 0)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("CamPivot/Camera3D/Hand/Gun:rotation")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 0, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_fos0i"]
-resource_name = "crouch"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("CamPivot:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, -0.81, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_r0du0"]
-resource_name = "shoot"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("CamPivot/Camera3D/Hand/Gun:position")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.02, 0.10000001, 0.26666668),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [Vector3(0, 0, 0), Vector3(0, 0, 0.15), Vector3(0, 0, 0.0056171417), Vector3(0, 0, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("CamPivot/Camera3D/Hand/Gun:rotation")
-tracks/1/interp = 2
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.033333335, 0.12, 0.2967),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [Vector3(0, 0, 0), Vector3(0.091158554, 0, 0), Vector3(-0.017453292, 0, 0), Vector3(0, 0, 0)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_fos0i"]
-_data = {
-&"RESET": SubResource("Animation_cm0pq"),
-&"crouch": SubResource("Animation_fos0i"),
-&"shoot": SubResource("Animation_r0du0")
-}
-
-[sub_resource type="BoxMesh" id="BoxMesh_cm0pq"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_fos0i"]
 
 [node name="Node3D" type="Node3D"]
 
@@ -133,57 +37,51 @@ material_override = SubResource("StandardMaterial3D_cm0pq")
 use_collision = true
 
 [node name="CSGBox3D" type="CSGBox3D" parent="Map/Floor"]
-size = Vector3(30, 1, 30)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5)
+size = Vector3(28, 1, 29)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Map/Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.5, 0, -40)
+size = Vector3(47, 1, 52)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="Map/Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.5, 0, -91)
+size = Vector3(11, 1, 52)
+
+[node name="CSGBox3D7" type="CSGBox3D" parent="Map/Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.5, 7, -117)
+size = Vector3(38, 15, 56)
+
+[node name="CSGBox3D8" type="CSGBox3D" parent="Map/Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 49.5, 7, -150.5)
+size = Vector3(118, 15, 49)
+
+[node name="CSGBox3D9" type="CSGBox3D" parent="Map/Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 89.5, 16.5, -168)
+size = Vector3(38, 34, 14)
+
+[node name="CSGBox3D10" type="CSGBox3D" parent="Map/Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 134, 12.5, -146)
+size = Vector3(127, 26, 14)
+
+[node name="CSGBox3D11" type="CSGBox3D" parent="Map/Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 73, 19.689922, -157.5)
+size = Vector3(5, 7, 9)
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="Map/Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 7, -91)
+size = Vector3(4, 15, 52)
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="Map/Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.5, 7, -91)
+size = Vector3(3, 15, 52)
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="Map/Floor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 12.5)
 size = Vector3(30, 9, 5)
 
-[node name="Player" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.827435, 0)
-script = ExtResource("1_glv2v")
-
-[node name="Character" type="Node3D" parent="Player"]
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Player/Character"]
-transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0)
-visible = false
-mesh = SubResource("BoxMesh_uu6xs")
-skeleton = NodePath("../..")
-
-[node name="CamPivot" type="Node3D" parent="Player"]
-script = ExtResource("2_uu6xs")
-
-[node name="Camera3D" type="Camera3D" parent="Player/CamPivot"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.47901106, 0)
-
-[node name="Hand" type="Node3D" parent="Player/CamPivot/Camera3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, -0.2, -1)
-
-[node name="Gun" type="MeshInstance3D" parent="Player/CamPivot/Camera3D/Hand"]
-transform = Transform3D(0.099999994, 0, 0, 0, 0.09999999, 0, 0, 0, 1, 0, 0, 0)
-mesh = SubResource("BoxMesh_r0du0")
-skeleton = NodePath("../..")
-
-[node name="Laser" type="MeshInstance3D" parent="Player/CamPivot/Camera3D/Hand/Gun"]
-transform = Transform3D(0.19999997, 0, 0, 0, 0.19999997, 0, 0, 0, 10, 0, 0, -5)
-mesh = SubResource("BoxMesh_r0du0")
-skeleton = NodePath("../../..")
-
-[node name="GunRay" type="RayCast3D" parent="Player/CamPivot/Camera3D"]
-transform = Transform3D(0.099999994, 0, 0, 0, 0.099999994, 0, 0, 0, 1, 0, 0, 0)
-target_position = Vector3(0, 0, -30)
-collide_with_areas = true
-collide_with_bodies = false
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
-transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0)
-shape = SubResource("BoxShape3D_uu6xs")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Player"]
-libraries = {
-&"": SubResource("AnimationLibrary_fos0i")
-}
+[node name="Player" parent="." instance=ExtResource("2_fos0i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 51, 24.827435, -154)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 script = ExtResource("5_fos0i")
@@ -198,36 +96,41 @@ grow_vertical = 0
 
 [node name="Enemies" type="Node3D" parent="."]
 
-[node name="Enemy" type="Area3D" parent="Enemies"]
+[node name="Enemy" parent="Enemies" instance=ExtResource("5_3dxm6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -7)
-script = ExtResource("2_cm0pq")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Enemies/Enemy"]
-mesh = SubResource("BoxMesh_cm0pq")
+[node name="Enemy2" parent="Enemies" instance=ExtResource("5_3dxm6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 1, -26)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Enemies/Enemy"]
-shape = SubResource("BoxShape3D_fos0i")
+[node name="Enemy3" parent="Enemies" instance=ExtResource("5_3dxm6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 1, -44)
 
-[node name="Timers" type="Node" parent="Enemies/Enemy"]
+[node name="Enemy4" parent="Enemies" instance=ExtResource("5_3dxm6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, -44)
 
-[node name="Attack" type="Timer" parent="Enemies/Enemy/Timers"]
-autostart = true
+[node name="Enemy5" parent="Enemies" instance=ExtResource("5_3dxm6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 16, -127)
 
-[node name="Enemy2" type="Area3D" parent="Enemies"]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, -13.068739, 3, -7)
-script = ExtResource("2_cm0pq")
-health = 300
+[node name="Enemy6" parent="Enemies" instance=ExtResource("5_3dxm6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 16, -137)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Enemies/Enemy2"]
-mesh = SubResource("BoxMesh_cm0pq")
+[node name="Enemy7" parent="Enemies" instance=ExtResource("5_3dxm6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9999995, 16, -121)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Enemies/Enemy2"]
-shape = SubResource("BoxShape3D_fos0i")
+[node name="Enemy8" parent="Enemies" instance=ExtResource("5_3dxm6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 131, 27, -146)
 
-[node name="Timers" type="Node" parent="Enemies/Enemy2"]
+[node name="Enemy12" parent="Enemies" instance=ExtResource("5_3dxm6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 115, 38, -152)
 
-[node name="Attack" type="Timer" parent="Enemies/Enemy2/Timers"]
-autostart = true
+[node name="Enemy9" parent="Enemies" instance=ExtResource("5_3dxm6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 151, 36, -159)
+
+[node name="Enemy10" parent="Enemies" instance=ExtResource("5_3dxm6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 168, 36, -133)
+
+[node name="Enemy11" parent="Enemies" instance=ExtResource("5_3dxm6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 168, 36, -159)
 
 [node name="Scripts" type="Node" parent="."]
 
@@ -247,6 +150,3 @@ skeleton = NodePath("../..")
 transform = Transform3D(0.19999997, 0, 0, 0, 0.19999997, 0, 0, 0, 10, 0, 0, -5)
 mesh = SubResource("BoxMesh_r0du0")
 skeleton = NodePath("../../..")
-
-[connection signal="timeout" from="Enemies/Enemy/Timers/Attack" to="Enemies/Enemy" method="_on_attack_timeout"]
-[connection signal="timeout" from="Enemies/Enemy2/Timers/Attack" to="Enemies/Enemy2" method="_on_attack_timeout"]

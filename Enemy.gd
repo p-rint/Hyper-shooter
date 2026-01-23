@@ -1,8 +1,9 @@
-extends Area3D
+extends CharacterBody3D
 
 @onready var attackTimer: Timer = $Timers/Attack
 
 @onready var player: CharacterBody3D = $"../../Player"
+
 
 @export var health = 30
 
@@ -17,6 +18,7 @@ func _process(delta: float) -> void:
 	pass
 	if health <= 0:
 		die()
+	$Hitbox.look_at(player.position)
 
 
 

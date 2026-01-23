@@ -1,0 +1,193 @@
+[gd_scene load_steps=10 format=3 uid="uid://qsqcpdmxd3mm"]
+
+[ext_resource type="Script" uid="uid://tg2mid3ya4bf" path="res://character_body_3d.gd" id="1_onrkg"]
+[ext_resource type="Script" uid="uid://go8e8enrhc4l" path="res://cam_pivot.gd" id="2_i3pqv"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_uu6xs"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_r0du0"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_uu6xs"]
+size = Vector3(1, 2, 1)
+
+[sub_resource type="Animation" id="Animation_cm0pq"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CamPivot/Camera3D/Hand/Gun:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CamPivot:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CamPivot/Camera3D/Hand/Gun:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CollisionShape3D:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("CollisionShape3D:scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_fos0i"]
+resource_name = "crouch"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CamPivot:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -0.81, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape3D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -0.4, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CollisionShape3D:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 0.2, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_r0du0"]
+resource_name = "shoot"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CamPivot/Camera3D/Hand/Gun:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.02, 0.10000001, 0.26666668),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0.15), Vector3(0, 0, 0.0056171417), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CamPivot/Camera3D/Hand/Gun:rotation")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.033333335, 0.12, 0.2967),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.091158554, 0, 0), Vector3(-0.017453292, 0, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_fos0i"]
+_data = {
+&"RESET": SubResource("Animation_cm0pq"),
+&"crouch": SubResource("Animation_fos0i"),
+&"shoot": SubResource("Animation_r0du0")
+}
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_onrkg")
+
+[node name="Character" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Character"]
+transform = Transform3D(1, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0)
+visible = false
+mesh = SubResource("BoxMesh_uu6xs")
+skeleton = NodePath("../..")
+
+[node name="CamPivot" type="Node3D" parent="."]
+script = ExtResource("2_i3pqv")
+
+[node name="Camera3D" type="Camera3D" parent="CamPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.47901106, 0)
+
+[node name="Hand" type="Node3D" parent="CamPivot/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, -0.2, -1)
+
+[node name="Gun" type="MeshInstance3D" parent="CamPivot/Camera3D/Hand"]
+transform = Transform3D(0.099999994, 0, 0, 0, 0.09999999, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("BoxMesh_r0du0")
+skeleton = NodePath("../..")
+
+[node name="Laser" type="MeshInstance3D" parent="CamPivot/Camera3D/Hand/Gun"]
+transform = Transform3D(0.19999997, 0, 0, 0, 0.19999997, 0, 0, 0, 10, 0, 0, -5)
+mesh = SubResource("BoxMesh_r0du0")
+skeleton = NodePath("../../..")
+
+[node name="GunRay" type="RayCast3D" parent="CamPivot/Camera3D"]
+transform = Transform3D(0.099999994, 0, 0, 0, 0.099999994, 0, 0, 0, 1, 0, 0, 0)
+target_position = Vector3(0, 0, -30)
+collide_with_areas = true
+collide_with_bodies = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_uu6xs")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_fos0i")
+}
+
+[node name="WallJump" type="RayCast3D" parent="."]
